@@ -3,7 +3,7 @@
     <div class="navHeader">
     <router-link to="/">
       <img src="https://universe.leagueoflegends.com/esimages/content_type_icon_champion__3nwJQ.png" />
-      Champions
+      Champions EUNE
     </router-link>
     </div>
     <input type="text" v-model="summonerName" placeholder="Find a Champion..." class="champSearch">
@@ -14,6 +14,8 @@
       <img class="summonerProfile" :src="`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/profileicon/${summonerProfile}.png`">
       </div>
       <p class="dataTxt">Level {{ summonerLevel }}</p>
+      <p class="dataTxt">PUUID {{ puuid }}</p>
+      <button class="RequestBtn" @click="getLast5Matches()">last 5 matches</button>
     </div>
 
   </div>
@@ -26,6 +28,7 @@ export default {
   name: 'HomeView',
   data() {
     return {
+      puuid: '',
       summonerName: '',
       summonerProfile: '',
       summonerLevel: ''
@@ -34,14 +37,17 @@ export default {
   methods: {
     async fetchSummoner() {
       const response = await authService.getSummoner(this.summonerName)
-      this.summonerProfile = "test"
+      this.puuid = response.data.puuid
       this.summonerProfile = response.data.profileIconId
       this.summonerLevel = response.data.summonerLevel
       console.log(response.data)
+    },
+    async getLast5Matches(){
+      const responseMatches = await authService.getLast5Matches(this.puuid)
+      console.log(responseMatches.data)
     }
   },
   mounted() {
-    this.fetchSummoner();
     console.log(process.env.VUE_APP_BASE_URL)
   }
 }
