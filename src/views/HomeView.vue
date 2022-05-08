@@ -15,7 +15,6 @@
       </div>
       <p class="dataTxt">Level {{ summonerLevel }}</p>
       <p class="dataTxt">PUUID {{ puuid }}</p>
-      <button class="RequestBtn" @click="getLast5Matches()">last 5 matches</button>
     </div>
 
   </div>
@@ -31,7 +30,8 @@ export default {
       puuid: '',
       summonerName: '',
       summonerProfile: '',
-      summonerLevel: ''
+      summonerLevel: '',
+      matchIDs: []
     }
   },
   methods: {
@@ -41,10 +41,14 @@ export default {
       this.summonerProfile = response.data.profileIconId
       this.summonerLevel = response.data.summonerLevel
       console.log(response.data)
-    },
-    async getLast5Matches(){
-      const responseMatches = await authService.getLast5Matches(this.puuid)
-      console.log(responseMatches.data)
+      const responseMatches = await authService.getLast5MatchesKeys(this.puuid)
+      var matchID
+      for (let i = 0; i < responseMatches.data.length; i++){
+        const matchID = responseMatches.data[i]
+        console.log(matchID)
+        // const responseMatch = await authService.getMatchData(this.matchID)
+        // console.log(responseMatch)
+      }
     }
   },
   mounted() {

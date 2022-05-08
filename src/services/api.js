@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export default () => {
-    return axios.create({
-        baseURL: `${process.env.VUE_APP_BASE_URL}`
-    })
+
+export const http = {
+    baseURL: axios.create({ baseURL: 'https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/' }),
+    baseURL2: axios.create({ baseURL: 'https://europe.api.riotgames.com/' })
 }
