@@ -14,11 +14,53 @@
       <img class="summonerProfile" :src="`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/profileicon/${summonerProfile}.png`">
       </div>
       <p class="dataTxt">Level {{ summonerLevel }}</p>
-      <!-- <p class="dataTxt">PUUID {{ puuid }}</p> -->
-      <button class="RequestBtn" @click="getHistory()">MATCH HISTORY</button>
+      <p class="matchHistoryText">MATCH HISTORY</p>
+      
       <div v-for="(match, index) in matchData" :key="index">
-        <h1>Game {{ index + 1 }}</h1>
-        <p>{{ match.data.info.gameMode }}</p>
+        <h1 class="dataTxt">Game {{ index + 1 }}</h1>
+        <p class="dataTxt">{{ match.data.info.gameMode }}</p>
+
+
+        <table class="tableStyle">
+          <tr>
+            <th style="color: #d0983f">Players</th>
+            <th style="color: #d0983f">Kills</th>
+            <th style="color: #d0983f">Deaths</th>
+            <th style="color: #d0983f">Assists</th>
+          </tr>
+          <tr>
+            <td class="dataTxt">Player1</td>
+            <td class="dataTxt">{{ match.data.info.participants[0].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[0].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[0].assists }}</td>
+          </tr>
+          <tr>
+            <td class="dataTxt">Player2</td>
+            <td class="dataTxt">{{ match.data.info.participants[1].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[1].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[1].assists }}</td>   
+          </tr>
+          <tr>
+            <td class="dataTxt">Player3</td>
+            <td class="dataTxt">{{ match.data.info.participants[2].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[2].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[2].assists }}</td>
+          </tr>
+          <tr>
+            <td class="dataTxt">Player4</td>
+            <td class="dataTxt">{{ match.data.info.participants[3].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[3].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[3].assists }}</td>   
+          </tr>
+          <tr>
+            <td class="dataTxt">Player5</td>
+            <td class="dataTxt">{{ match.data.info.participants[4].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[4].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[4].assists }}</td>
+          </tr>
+        </table> 
+
+
       </div>
     </div>
 
@@ -53,14 +95,12 @@ export default {
         let matchID = responseMatches.data[i]
         await this.matchIDs.push(matchID)
       }
-    },
-    async getHistory(){
+
       for(let i = 0; i < this.matchIDs.length; i++){
         const responseMatch = await authService.getMatchData(this.matchIDs[i])
         await this.matchData.push(responseMatch)
         console.log(responseMatch)
       }
-      
     }
   },
   mounted() {
@@ -103,13 +143,23 @@ $baseColor: #826332;
 
 .dataCont{
   margin: auto;
-  width: 50%;
-  height: 500px;
+  width: 600px;
+  min-height: 300px;
+  height: auto;
   border: 1px solid $baseColor;
+    @media only screen and (max-width: 800px) {
+      width: 80vw;
+    }
 }
 
 .summonerProfile{
   width: 150px;
+}
+
+.matchHistoryText{
+  font-size: 1.4rem;
+  border-bottom: 1px solid $baseColor;
+  color: $baseColor;
 }
 
 .dataTxt{
@@ -125,7 +175,7 @@ $baseColor: #826332;
   color: $baseColor;
   outline: none;
   width: 250px;
-      @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 600px) {
       width: 80vw;
     }
 }
@@ -137,6 +187,11 @@ $baseColor: #826332;
   color: $baseColor;
   border: 1px solid $baseColor;
   cursor: pointer;
+}
+
+.tableStyle{
+  border: 1px solid $baseColor;
+  margin: auto;
 }
 
 </style>
