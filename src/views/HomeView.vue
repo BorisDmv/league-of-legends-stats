@@ -29,34 +29,64 @@
             <th style="color: #d0983f">Assists</th>
           </tr>
           <tr>
-            <td class="dataTxt">Player1</td>
+            <td class="dataTxt">{{ match.data.info.participants[0].summonerName }}</td>
             <td class="dataTxt">{{ match.data.info.participants[0].kills }}</td>
             <td class="dataTxt">{{ match.data.info.participants[0].deaths }}</td>
             <td class="dataTxt">{{ match.data.info.participants[0].assists }}</td>
           </tr>
           <tr>
-            <td class="dataTxt">Player2</td>
+            <td class="dataTxt">{{ match.data.info.participants[1].summonerName }}</td>
             <td class="dataTxt">{{ match.data.info.participants[1].kills }}</td>
             <td class="dataTxt">{{ match.data.info.participants[1].deaths }}</td>
             <td class="dataTxt">{{ match.data.info.participants[1].assists }}</td>   
           </tr>
           <tr>
-            <td class="dataTxt">Player3</td>
+            <td class="dataTxt">{{ match.data.info.participants[2].summonerName }}</td>
             <td class="dataTxt">{{ match.data.info.participants[2].kills }}</td>
             <td class="dataTxt">{{ match.data.info.participants[2].deaths }}</td>
             <td class="dataTxt">{{ match.data.info.participants[2].assists }}</td>
           </tr>
           <tr>
-            <td class="dataTxt">Player4</td>
+            <td class="dataTxt">{{ match.data.info.participants[3].summonerName }}</td>
             <td class="dataTxt">{{ match.data.info.participants[3].kills }}</td>
             <td class="dataTxt">{{ match.data.info.participants[3].deaths }}</td>
             <td class="dataTxt">{{ match.data.info.participants[3].assists }}</td>   
           </tr>
           <tr>
-            <td class="dataTxt">Player5</td>
+            <td class="dataTxt">{{ match.data.info.participants[4].summonerName }}</td>
             <td class="dataTxt">{{ match.data.info.participants[4].kills }}</td>
             <td class="dataTxt">{{ match.data.info.participants[4].deaths }}</td>
             <td class="dataTxt">{{ match.data.info.participants[4].assists }}</td>
+          </tr>
+          <tr>
+            <td class="dataTxt">{{ match.data.info.participants[5].summonerName }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[5].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[5].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[5].assists }}</td>
+          </tr>
+          <tr>
+            <td class="dataTxt">{{ match.data.info.participants[6].summonerName }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[6].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[6].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[6].assists }}</td>
+          </tr>
+          <tr>
+            <td class="dataTxt">{{ match.data.info.participants[7].summonerName }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[7].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[7].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[7].assists }}</td>
+          </tr>
+          <tr>
+            <td class="dataTxt">{{ match.data.info.participants[8].summonerName }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[8].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[8].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[8].assists }}</td>
+          </tr>
+          <tr>
+            <td class="dataTxt">{{ match.data.info.participants[9].summonerName }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[9].kills }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[9].deaths }}</td>
+            <td class="dataTxt">{{ match.data.info.participants[9].assists }}</td>
           </tr>
         </table> 
 
@@ -84,23 +114,23 @@ export default {
   },
   methods: {
     async fetchSummoner() {
-      const response = await authService.getSummoner(this.summonerName)
-      this.puuid = response.data.puuid
-      this.summonerProfile = response.data.profileIconId
-      this.summonerLevel = response.data.summonerLevel
-      console.log(response.data)
-      const responseMatches = await authService.getLast5MatchesKeys(this.puuid)
-      for (let i = 0; i < responseMatches.data.length; i++){
-        console.log(responseMatches.data[i])
-        let matchID = responseMatches.data[i]
-        await this.matchIDs.push(matchID)
-      }
+        const response = await authService.getSummoner(this.summonerName)
+        this.puuid = response.data.puuid
+        this.summonerProfile = response.data.profileIconId
+        this.summonerLevel = response.data.summonerLevel
+        console.log(response.data)
+        const responseMatches = await authService.getLast5MatchesKeys(this.puuid)
+        for (let i = 0; i < responseMatches.data.length; i++){
+          //console.log(responseMatches.data[i])
+          let matchID = responseMatches.data[i]
+          await this.matchIDs.push(matchID)
+        }
 
-      for(let i = 0; i < this.matchIDs.length; i++){
-        const responseMatch = await authService.getMatchData(this.matchIDs[i])
-        await this.matchData.push(responseMatch)
-        console.log(responseMatch)
-      }
+        for(let i = 0; i < this.matchIDs.length; i++){
+          const responseMatch = await authService.getMatchData(this.matchIDs[i])
+          console.log(responseMatch)
+          await this.matchData.push(responseMatch)
+        }    
     }
   },
   mounted() {
