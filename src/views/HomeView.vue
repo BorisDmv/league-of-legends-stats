@@ -14,7 +14,12 @@
       <img class="summonerProfile" :src="`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/profileicon/${summonerProfile}.png`">
       </div>
       <p class="dataTxt">Level {{ summonerLevel }}</p>
-      <p class="dataTxt">PUUID {{ puuid }}</p>
+      <!-- <p class="dataTxt">PUUID {{ puuid }}</p> -->
+      <button class="RequestBtn" @click="getHistory()">MATCH HISTORY</button>
+      <div v-for="(match, index) in matchData" :key="index">
+        <h1>Game {{ index + 1 }}</h1>
+        <p>{{ match.data.info.gameMode }}</p>
+      </div>
     </div>
 
   </div>
@@ -31,7 +36,8 @@ export default {
       summonerName: '',
       summonerProfile: '',
       summonerLevel: '',
-      matchIDs: []
+      matchIDs: [],
+      matchData: []
     }
   },
   methods: {
@@ -42,13 +48,19 @@ export default {
       this.summonerLevel = response.data.summonerLevel
       console.log(response.data)
       const responseMatches = await authService.getLast5MatchesKeys(this.puuid)
-      var matchID
       for (let i = 0; i < responseMatches.data.length; i++){
-        const matchID = responseMatches.data[i]
-        console.log(matchID)
-        // const responseMatch = await authService.getMatchData(this.matchID)
-        // console.log(responseMatch)
+        console.log(responseMatches.data[i])
+        let matchID = responseMatches.data[i]
+        await this.matchIDs.push(matchID)
       }
+    },
+    async getHistory(){
+      for(let i = 0; i < this.matchIDs.length; i++){
+        const responseMatch = await authService.getMatchData(this.matchIDs[i])
+        await this.matchData.push(responseMatch)
+        console.log(responseMatch)
+      }
+      
     }
   },
   mounted() {
